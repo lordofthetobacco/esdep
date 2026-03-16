@@ -1,0 +1,14 @@
+### ESDEP
+Easy deployment system that runs headless as a service \
+It utilizes ssh keys for pulling git repos
+
+### Building
+1. Clone the thing
+2. Fetch deps
+```
+go mod tidy
+```
+3. Build it
+```
+go build -o whatever ./cli/main.go
+```
