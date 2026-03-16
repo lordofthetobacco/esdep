@@ -12,3 +12,6 @@ go mod tidy
 ```
 go build -o whatever ./cli/main.go
 ```
+
+### Config
+You can find sample config in ```config.yaml``` file
