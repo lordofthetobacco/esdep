@@ -89,22 +89,29 @@ func RunUpdateChecker(entries []config.DeployEntry, interval time.Duration) {
 	ticker := time.NewTicker(interval)
 	defer ticker.Stop()
 
+	// Run first check immediately so user sees output right away
+	checkAndDeploy(entries)
+
 	for range ticker.C {
-		for _, entry := range entries {
-			hasUpdates, err := CheckForRemoteUpdates(entry)
-			if err != nil {
-				fmt.Fprintf(os.Stderr, "Check for updates failed for %s: %v\n", entry.Path, err)
-				continue
+		checkAndDeploy(entries)
+	}
+}
+
+func checkAndDeploy(entries []config.DeployEntry) {
+	for _, entry := range entries {
+		hasUpdates, err := CheckForRemoteUpdates(entry)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Check for updates failed for %s: %v\n", entry.Path, err)
+			continue
+		}
+		if hasUpdates {
+			fmt.Printf("New code is available on the remote repository! (%s)\n", entry.Path)
+			fmt.Println("Triggering deployment process...")
+			if err := Deploy(entry); err != nil {
+				fmt.Fprintf(os.Stderr, "Deploy failed for %s: %v\n", entry.Path, err)
 			}
-			if hasUpdates {
-				fmt.Printf("New code is available on the remote repository! (%s)\n", entry.Path)
-				fmt.Println("Triggering deployment process...")
-				if err := Deploy(entry); err != nil {
-					fmt.Fprintf(os.Stderr, "Deploy failed for %s: %v\n", entry.Path, err)
-				}
-			} else {
-				fmt.Printf("%s is up to date.\n", entry.Path)
-			}
+		} else {
+			fmt.Printf("%s is up to date.\n", entry.Path)
 		}
 	}
 }

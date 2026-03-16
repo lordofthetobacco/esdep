@@ -1,5 +1,5 @@
 ### ESDEP
-Easy deployment system that runs headless as a service \
+Easy deployment system that runs as a background service
 It utilizes ssh keys for pulling git repos
 
 ### Building

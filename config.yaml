@@ -1,0 +1,6 @@
+deploy:
+  - path: ~/esdeptest
+    repo: git@github.com:lordofthetobacco/esdep.git
+    deploy_key: ~/.ssh/id_github
+    script: |
+      open -a "Simulator.app"
