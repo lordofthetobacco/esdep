@@ -88,7 +88,6 @@ func CheckForRemoteUpdates(entry config.DeployEntry) (hasUpdates bool, err error
 func RunUpdateChecker(entries []config.DeployEntry, interval time.Duration) {
 	ticker := time.NewTicker(interval)
 	defer ticker.Stop()
-
 	// Run first check immediately so user sees output right away
 	checkAndDeploy(entries)
 
